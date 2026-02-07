@@ -67,6 +67,8 @@ Shell scripts are embedded in the binary via `//go:embed` directives in `interna
 - **Unit tests** (`*_test.go`): Standard Go tests, table-driven pattern used extensively
 - **Integration tests** (`features/*.feature`): Cucumber/Aruba BDD tests that exercise the compiled binary end-to-end, testing shell integration, edge cases (symlinks, special characters, merge conflicts, renames)
 
+For detailed architecture, module guide, data flow diagrams, and navigation guide, see [docs/CODEBASE_MAP.md](docs/CODEBASE_MAP.md).
+
 ## Conventions
 
 - Go 1.24; uses Go modules
