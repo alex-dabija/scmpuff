@@ -32,6 +32,12 @@ For fish shell, add the following to ~/.config/fish/config.fish instead:
 
     scmpuff init --shell=fish | source
 
+For nushell, save the init script and source it in your config.nu:
+
+    scmpuff init --shell=nu | save -f ~/.cache/scmpuff/init.nu
+    # then add to ~/.config/nushell/config.nu:
+    source ~/.cache/scmpuff/init.nu
+
 There are a number of flags to customize the shell integration.
     `,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -47,6 +53,8 @@ There are a number of flags to customize the shell integration.
 				fmt.Println(bashCollection.Output(wrapGit, includeAliases))
 			case "fish":
 				fmt.Println(fishCollection.Output(wrapGit, includeAliases))
+			case "nu":
+				fmt.Println(nushellCollection.Output(wrapGit, includeAliases))
 			default:
 				return fmt.Errorf(`unrecognized shell "%s"`, shellType)
 			}
@@ -83,7 +91,7 @@ There are a number of flags to customize the shell integration.
 	initCmd.Flags().StringVarP(
 		&shellType,
 		"shell", "s", "",
-		"Output shell type: sh | bash | zsh | fish",
+		"Output shell type: sh | bash | zsh | fish | nu",
 	)
 	initCmd.Flag("shell").NoOptDefVal = defaultShellType()
 
@@ -95,7 +103,7 @@ func defaultShellType() string {
 	if shellenv, ok := os.LookupEnv("SHELL"); ok {
 		base := filepath.Base(shellenv)
 		switch base {
-		case "sh", "bash", "zsh", "fish":
+		case "sh", "bash", "zsh", "fish", "nu":
 			return base
 		}
 	}

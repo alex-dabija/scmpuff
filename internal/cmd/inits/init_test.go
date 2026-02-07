@@ -13,6 +13,7 @@ func Test_defaultShellType(t *testing.T) {
 		{"/usr/local/bin/zsh", "zsh"},
 		{"/bin/bash", "bash"},
 		{"/usr/local/bin/fish", "fish"},
+		{"/usr/local/bin/nu", "nu"},
 
 		// edge cases
 		{"", "sh"},

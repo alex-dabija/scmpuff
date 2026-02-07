@@ -20,6 +20,15 @@ var scriptGitWrapper string
 //go:embed data/git_wrapper.fish
 var scriptGitWrapperFish string
 
+//go:embed data/status_shortcuts.nu
+var scriptStatusShortcutsNu string
+
+//go:embed data/git_wrapper.nu
+var scriptGitWrapperNu string
+
+//go:embed data/aliases.nu
+var scriptAliasesNu string
+
 type scriptCollection struct {
 	statusShortcuts string
 	gitWrapper      string
@@ -36,6 +45,12 @@ var fishCollection = scriptCollection{
 	statusShortcuts: scriptStatusShortcutsFish,
 	gitWrapper:      scriptGitWrapperFish,
 	aliases:         scriptAliases,
+}
+
+var nushellCollection = scriptCollection{
+	statusShortcuts: scriptStatusShortcutsNu,
+	gitWrapper:      scriptGitWrapperNu,
+	aliases:         scriptAliasesNu,
 }
 
 func (sc scriptCollection) Output(wrapGit, aliases bool) string {

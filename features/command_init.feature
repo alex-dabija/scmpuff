@@ -48,3 +48,19 @@ Feature: init command
       | zsh   |
       | fish  |
 
+  Scenario: init with nushell should contain status shortcuts
+    When I successfully run `scmpuff init --shell=nu`
+    Then the output should contain "def --env scmpuff_status"
+
+  Scenario: init with nushell --wrap controls git wrapper
+    When I successfully run `scmpuff init --shell=nu`
+    Then the output should contain "def --env --wrapped git"
+
+  Scenario: init with nushell --wrap=false should not contain git wrapper
+    When I successfully run `scmpuff init --shell=nu --wrap=false`
+    Then the output should not contain "def --env --wrapped git"
+
+  Scenario: init with nushell --aliases=false should not contain aliases
+    When I successfully run `scmpuff init --shell=nu --aliases=false`
+    Then the output should not contain "alias gs"
+
