@@ -64,7 +64,7 @@ scmpuff init [flags]
 
 | Flag | Short | Description |
 |------|-------|-------------|
-| `--shell` | `-s` | Shell type: `sh`, `bash`, `zsh`, or `fish` |
+| `--shell` | `-s` | Shell type: `sh`, `bash`, `zsh`, `fish`, or `nu` |
 | `--aliases` | `-a` | Include short aliases (gs, ga, gd, etc.) |
 | `--wrap` | `-w` | Include git command wrapper |
 
@@ -74,6 +74,7 @@ scmpuff init [flags]
 - Designed to be used with `eval`:
   - bash/zsh: `eval "$(scmpuff init -s)"`
   - fish: `scmpuff init --shell=fish | source`
+  - nushell: `scmpuff init --shell=nu | save -f ~/.cache/scmpuff/init.nu` then `source ~/.cache/scmpuff/init.nu` in config.nu
 
 ## Shell Functions (provided by `scmpuff init`)
 
@@ -89,7 +90,7 @@ scmpuff init [flags]
 |----------|----------|---------------|
 | Absolute paths | `commit`, `blame`, `log`, `rebase`, `merge` | `scmpuff exec` |
 | Relative paths | `checkout`, `diff`, `rm`, `reset`, `restore` | `scmpuff exec -r` |
-| Special | `add` | Expand + auto-refresh status after |
+| Special | `add` | `scmpuff exec` (absolute) + auto-refresh status after |
 | Passthrough | All others | Direct to git (no expansion) |
 
 ### Default Aliases
@@ -99,7 +100,9 @@ scmpuff init [flags]
 | `gs` | `scmpuff_status` |
 | `ga` | `git add` |
 | `gd` | `git diff` |
+| `gl` | `git log` |
 | `gco` | `git checkout` |
+| `grs` | `git reset` |
 
 ## `scmpuff debug dump`
 

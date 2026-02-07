@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**scmpuff** is a Go CLI tool that adds numbered shortcuts for file paths in common Git commands. It parses `git status` output, assigns numbers to files, and lets users reference files by number (e.g., `git add 1-3`). Supports bash, zsh, and fish shells.
+**scmpuff** is a Go CLI tool that adds numbered shortcuts for file paths in common Git commands. It parses `git status` output, assigns numbers to files, and lets users reference files by number (e.g., `git add 1-3`). Supports bash, zsh, fish, and nushell.
 
 ## Build & Development Commands
 

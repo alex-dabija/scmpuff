@@ -4,7 +4,7 @@
 
 - **Go 1.24+** — for building and unit testing
 - **Ruby + Bundler** — for integration tests (Cucumber/Aruba)
-- **zsh and fish** — for full shell integration test coverage
+- **zsh, fish, and nushell** — for full shell integration test coverage
 
 If you don't have a local Ruby environment, there is a [VS Code devcontainer](../../.devcontainer/devcontainer.json) that provides everything pre-configured.
 
@@ -50,6 +50,7 @@ Edit the shell wrapper scripts that are embedded in the binary:
 
 1. `internal/cmd/inits/data/git_wrapper.sh` — bash/zsh wrapper
 2. `internal/cmd/inits/data/git_wrapper.fish` — fish wrapper
+3. `internal/cmd/inits/data/git_wrapper.nu` — nushell wrapper
 
 Add the command to the appropriate category (absolute-path or relative-path expansion).
 

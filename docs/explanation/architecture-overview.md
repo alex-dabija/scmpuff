@@ -4,7 +4,7 @@ scmpuff is a Go CLI tool that adds numbered shortcuts for file paths in common G
 
 ## Design Principles
 
-- **Compiled core, thin shell layer**: The majority of logic lives in a compiled Go binary. Shell integration is under 100 lines of script per shell, minimizing shell-specific complexity.
+- **Compiled core, thin shell layer**: The majority of logic lives in a compiled Go binary. Shell integration is kept small per shell, minimizing shell-specific complexity.
 - **Environment variable bridge**: The binary and shell communicate through numbered environment variables (`$e1`, `$e2`, ...). This avoids temp files and works across all supported shells.
 - **Porcelain parsing**: Uses `git status --porcelain` for machine-stable output parsing rather than scraping human-readable git output.
 - **Cross-platform**: CGO is disabled; builds target Linux, macOS, and Windows across amd64/arm/arm64.
@@ -64,7 +64,7 @@ The binary is organized into three layers:
 |-------|----------|---------------|
 | CLI | `cmd/root`, `cmd/status`, `cmd/exec`, `cmd/expand`, `cmd/inits` | Command definitions, flag parsing, I/O |
 | Core Logic | `arguments`, `gitstatus`, `gitstatus/porcelainv1` | Numeric expansion, git status parsing |
-| Shell Integration | Embedded scripts in `cmd/inits/data/` | Shell functions, git wrappers, aliases |
+| Shell Integration | Embedded scripts in `cmd/inits/data/` | Shell functions, git wrappers, aliases (bash/zsh, fish, nushell) |
 
 For detailed module-by-module documentation, see [CODEBASE_MAP.md](../CODEBASE_MAP.md).
 

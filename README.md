@@ -12,7 +12,8 @@ It is focused on simplicity, speed, robustness, and cross-platform support. The
 majority of the functionality is contained within a compiled binary, and the
 shell integration is under 100 lines of shell script.
 
-**scmpuff** currently has built-in support for `bash`, `zsh`, and `fish`.
+**scmpuff** currently has built-in support for `bash`, `zsh`, `fish`, and
+`nushell`.
 
 [scmbreeze]: https://github.com/ndbroadbent/scm_breeze
 
@@ -30,7 +31,7 @@ Alternatively, if you use [Homebrew], you can just: `brew install scmpuff`.
 
 ## Setup
 
-Currently scmpuff supports bash, zsh and fish for all functionality.
+Currently scmpuff supports bash, zsh, fish, and nushell for all functionality.
 
 To initialize shell functions, add the following to your `~/.bash_profile` or
 `~/.zshrc` file:
@@ -41,9 +42,16 @@ For [fish] shell, add the following to your `~/.config/fish/config.fish` file:
 
     scmpuff init --shell=fish | source
 
+For [nushell], save the init script and source it in your config:
+
+    scmpuff init --shell=nu | save -f ~/.cache/scmpuff/init.nu
+    # then add to ~/.config/nushell/config.nu:
+    source ~/.cache/scmpuff/init.nu
+
 This will define the scmpuff shell functions as well as some handy shortcuts.
 
 [fish]: https://fishshell.com/
+[nushell]: https://www.nushell.sh/
 
 
 ## Usage
