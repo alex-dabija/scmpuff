@@ -108,3 +108,13 @@ example, `export SCMPUFF_GIT_CMD=/usr/local/bin/hub`.
 
 [hub]: https://github.com/github/hub
 
+
+## Documentation
+
+- [Architecture overview](docs/explanation/architecture-overview.md)
+- [CLI command reference](docs/reference/cli-commands.md)
+- [Development guide](docs/how-to/development.md)
+- [Codebase map](docs/CODEBASE_MAP.md)
+- [Contributing](docs/CONTRIBUTING.md)
+- [Security policy](docs/SECURITY.md)
+

@@ -33,41 +33,25 @@ bundle exec cucumber features/command_status.feature
 
 ## Architecture
 
+Two-phase design: (1) `scmpuff status` parses `git status --porcelain -z -b` → numbered display + sets `$e1`, `$e2`, ... env vars. (2) `scmpuff exec`/`expand` resolves numeric args (e.g., `1-3`) back to file paths via those env vars. Shell scripts embedded via `//go:embed`.
+
 ### Source Layout (`internal/`)
 
-- **`cmd/`** — Cobra CLI command definitions, one package per subcommand:
-  - `status/` — Main feature: numbered `git status` display with env var export
-  - `expand/` — Expands numeric shortcuts (e.g., "1-3") to file paths from env vars
-  - `exec/` — Runs a command with numeric args expanded inline
-  - `inits/` — Generates shell initialization scripts (embeds shell code via `//go:embed`)
-  - `intro/` — Intro/help display
-  - `debug/` — Debug dump utilities
-  - `root.go` — Root command wiring
-- **`arguments/`** — Core logic for parsing and expanding numeric file arguments
-- **`gitstatus/`** — Git status parsing; `porcelainv1/` handles `git status --porcelain` output
-
-### Key Data Flow
-
-```
-git status --porcelain -z -b
-  → porcelainv1.Process() → gitstatus.StatusInfo
-  → status.Renderer (colored terminal output + sets $e1, $e2, ... env vars)
-```
-
-Users then reference files as `1`, `2`, `1-3`, etc. The `expand` and `exec` commands resolve these numbers back to file paths via the `$eN` environment variables.
-
-### Shell Integration
-
-Shell scripts are embedded in the binary via `//go:embed` directives in `internal/cmd/inits/`. The `scmpuff init` command outputs these scripts for users to `eval` in their shell config. Scripts provide:
-- `scmpuff_status` shell function (wraps `git status` with numbered output)
-- Git command wrappers (add, checkout, diff, reset) that auto-expand numeric args
+- **`cmd/`** — Cobra CLI command definitions (one package per subcommand: `status/`, `expand/`, `exec/`, `inits/`, `intro/`, `debug/`, `root.go`)
+- **`arguments/`** — Numeric argument parsing and expansion logic
+- **`gitstatus/`** — Git status data model; `porcelainv1/` parses `--porcelain` output
 
 ### Testing
 
-- **Unit tests** (`*_test.go`): Standard Go tests, table-driven pattern used extensively
-- **Integration tests** (`features/*.feature`): Cucumber/Aruba BDD tests that exercise the compiled binary end-to-end, testing shell integration, edge cases (symlinks, special characters, merge conflicts, renames)
+- **Unit tests** (`*_test.go`): table-driven Go tests
+- **Integration tests** (`features/*.feature`): Cucumber/Aruba BDD tests exercising the compiled binary end-to-end
 
-For detailed architecture, module guide, data flow diagrams, and navigation guide, see [docs/CODEBASE_MAP.md](docs/CODEBASE_MAP.md).
+### Detailed Documentation
+
+- [Architecture overview](docs/explanation/architecture-overview.md) — design principles, data flow, technology choices
+- [CLI command reference](docs/reference/cli-commands.md) — all commands, flags, and environment variables
+- [Development guide](docs/how-to/development.md) — build, test, lint, and common workflows
+- [Codebase map](docs/CODEBASE_MAP.md) — module-by-module guide with dependency graphs
 
 ## Conventions
 
@@ -75,4 +59,4 @@ For detailed architecture, module guide, data flow diagrams, and navigation guid
 - Exit code 128 when not in a git repository (matches git's convention)
 - `errcheck` linter is intentionally disabled; `exhaustive` linter is enabled for switch/map completeness
 - CGO is disabled for cross-platform builds
-- Build uses `-mod=readonly` and `-trimpath`
+- Release builds (goreleaser) use `-mod=readonly` and `-trimpath`; `make build` uses `-mod=readonly` only
