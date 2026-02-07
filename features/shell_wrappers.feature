@@ -16,7 +16,7 @@ Feature: optional wrapping of normal git cmds in the shell
       And I close the shell `<shell>`
     Then the output should contain:
       """
-      # On branch: master  |  [*] => $e*
+      # On branch: main  |  [*] => $e*
       #
       ➤ Changes to be committed
       #

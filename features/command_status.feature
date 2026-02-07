@@ -31,7 +31,7 @@ Feature: status command
   Scenario: Banner shows current branch name
     Given I am in a git repository
     When I successfully run `scmpuff status`
-    Then the stdout from "scmpuff status" should contain "On branch: master"
+    Then the stdout from "scmpuff status" should contain "On branch: main"
 
     When I switch to git branch "foobar"
     And  I successfully run `scmpuff status`
@@ -246,14 +246,14 @@ Feature: status command
     And I successfully run `git add both_added both_modified deleted_by_us`
     And I successfully run `git commit -m "Branch commit"`
 
-    And I successfully run `git checkout master`
-    And I append to "both_added" with "added by master"
-    And I append to "both_modified" with "master line"
+    And I successfully run `git checkout main`
+    And I append to "both_added" with "added by main"
+    And I append to "both_modified" with "main line"
     And I append to "deleted_by_them" with "deleted by them"
     And I successfully run `git rm deleted_by_us both_deleted`
-    And I successfully run `git mv renamed_file renamed_file_on_master`
+    And I successfully run `git mv renamed_file renamed_file_on_main`
     And I successfully run `git add both_added both_modified deleted_by_them`
-    And I successfully run `git commit -m "Master commit"`
+    And I successfully run `git commit -m "Main commit"`
     And I run `git merge conflict_branch`
 
     When I successfully run `scmpuff status`
@@ -263,7 +263,7 @@ Feature: status command
     Then the output should match /deleted by us: *\[[0-9]*\] *deleted_by_us/
     Then the output should match /both deleted: *\[[0-9]*\] *renamed_file/
     Then the output should match /added by them: *\[[0-9]*\] *renamed_file_on_branch/
-    Then the output should match /added by us: *\[[0-9]*\] *renamed_file_on_master/
+    Then the output should match /added by us: *\[[0-9]*\] *renamed_file_on_main/
 
   Scenario: Status for a handling a conflict when rebasing
     Given I am in a git repository
@@ -279,12 +279,12 @@ Feature: status command
     And I successfully run `git add file_with_conflict`
     And I successfully run `git commit -m "Edited in branch foobar"`
 
-    When I switch to existing git branch "master"
-    And I append to "file_with_conflict" with "a change from master"
+    When I switch to existing git branch "main"
+    And I append to "file_with_conflict" with "a change from main"
     And I successfully run `git add file_with_conflict`
-    And I successfully run `git commit -m "Edited in branch master"`
+    And I successfully run `git commit -m "Edited in branch main"`
 
     When I switch to existing git branch "foobar"
-    And I run `git rebase master`
+    And I run `git rebase main`
     And I successfully run `scmpuff status`
     Then the output should match /On branch: HEAD \(no branch\)/
