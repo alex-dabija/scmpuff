@@ -57,12 +57,34 @@ end
 
 # Execute all collected nushell commands as a single script.
 # The working directory is set to aruba's current directory.
+#
+# Nushell validates `source` paths at parse time, before any commands execute.
+# To support the pattern where a command generates a file that is then sourced,
+# we extract commands that pipe to `save` and run them in a preliminary step so
+# the files exist when nushell parses the main script's `source` directives.
 When(/^I run the nushell commands$/) do
-  # Prepend a cd command so nushell runs in aruba's working directory
   cwd = expand_path(".")
-  script = "cd #{cwd}\n" + @nu_commands.join("\n")
 
-  # Write the script to /tmp to avoid polluting the git repo under test
+  pre_commands = []
+  main_commands = []
+  @nu_commands.each do |cmd|
+    if cmd =~ /\|\s*save\s/
+      pre_commands << cmd
+    else
+      main_commands << cmd
+    end
+  end
+
+  # Run file-generating commands first so `source` can find them at parse time
+  if pre_commands.any?
+    pre_script = "cd #{cwd}\n" + pre_commands.join("\n")
+    @nu_pre_script_path = "/tmp/_nu_pre_script_#{$$}.nu"
+    File.write(@nu_pre_script_path, pre_script)
+    run_command_and_stop("nu #{@nu_pre_script_path}", fail_on_error: false)
+  end
+
+  # Write the main script to /tmp to avoid polluting the git repo under test
+  script = "cd #{cwd}\n" + main_commands.join("\n")
   @nu_script_path = "/tmp/_nu_test_script_#{$$}.nu"
   File.write(@nu_script_path, script)
 
@@ -70,5 +92,6 @@ When(/^I run the nushell commands$/) do
 end
 
 After('@nu-script') do
+  File.delete(@nu_pre_script_path) if @nu_pre_script_path && File.exist?(@nu_pre_script_path)
   File.delete(@nu_script_path) if @nu_script_path && File.exist?(@nu_script_path)
 end
