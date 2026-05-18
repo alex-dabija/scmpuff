@@ -56,6 +56,12 @@ func Test_extractChangeTypes(t *testing.T) {
 				gitstatus.ChangeUnstagedModified,
 			},
 		},
+		{
+			[]byte(" A"), //[]byte(" A intent_to_add_file"),
+			[]gitstatus.ChangeType{
+				gitstatus.ChangeUnstagedIntentToAdd,
+			},
+		},
 	}
 
 	for _, tc := range testCases {

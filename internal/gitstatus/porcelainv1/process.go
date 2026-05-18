@@ -152,7 +152,7 @@ Below documentation from git status:
 
 	X          Y     Meaning
 	-------------------------------------------------
-	          [MD]   not updated
+	         [AMD]   not updated (Y='A' = intent-to-add via `git add -N`)
 	M        [ MD]   updated in index
 	A        [ MD]   added to index
 	D         [ M]   deleted from index
@@ -238,6 +238,8 @@ func decodeSecondaryChangeCode(x, y byte) (gitstatus.ChangeType, bool) {
 		return gitstatus.ChangeUnstagedDeleted, true
 	case y == 'T': //.T
 		return gitstatus.ChangeUnstagedType, true
+	case y == 'A': // intent-to-add: file registered via `git add -N`
+		return gitstatus.ChangeUnstagedIntentToAdd, true
 	}
 
 	return -1, false

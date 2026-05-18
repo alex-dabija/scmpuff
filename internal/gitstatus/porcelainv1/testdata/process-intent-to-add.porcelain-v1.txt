@@ -1,0 +1,3 @@
+## main
+ A new_file.txt
+ M existing_file.txt

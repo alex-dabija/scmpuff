@@ -38,6 +38,20 @@ Feature: status command
     Then the stdout from "scmpuff status" should contain "On branch: foobar"
 
 
+  Scenario: Intent-to-add files are listed under unstaged changes
+    Intent-to-add (`git add -N`) is a real git state that emits XY=" A" in
+    porcelain v1; scmpuff must not error on it.
+
+    Given I am in a git repository
+    And an empty file named "intent.txt"
+    When I successfully run the following commands:
+      | git add -N intent.txt |
+    And I successfully run `scmpuff status`
+    Then the output should contain "Changes not staged for commit"
+    And the output should contain "new file:"
+    And the output should contain "intent.txt"
+
+
   Scenario: Banner shows position relative to remote status
     # Simulate a remote git repository situation
     Given a git repository named "simulatedremote"

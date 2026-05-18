@@ -59,6 +59,26 @@ func TestProcess(t *testing.T) {
 				},
 			},
 		},
+		{
+			sampleFile: "process-intent-to-add.porcelain-v1z.txt",
+			want: &gitstatus.StatusInfo{
+				Branch: gitstatus.BranchInfo{
+					Name:          "main",
+					CommitsAhead:  0,
+					CommitsBehind: 0,
+				},
+				Items: []gitstatus.StatusItem{
+					{
+						Path:       "new_file.txt",
+						ChangeType: gitstatus.ChangeUnstagedIntentToAdd,
+					},
+					{
+						Path:       "existing_file.txt",
+						ChangeType: gitstatus.ChangeUnstagedModified,
+					},
+				},
+			},
+		},
 	}
 
 	for _, tc := range testCases {
